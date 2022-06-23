@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,7 +27,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //final List<String> nav = ['Мои фото', 'Галерея'];
-  final List<Tab> nav = [const Tab(text: 'Мои фото'), const Tab(text: 'Галерея')];
+  final List<Tab> nav = [
+    const Tab(text: 'Мои фото'),
+    const Tab(text: 'Галерея')
+  ];
 
   //final List fakeData = List.generate(100, (index) => index.toString());
 
@@ -79,8 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ...data[name.text].map((e) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Image.network(e),
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        color: Colors.white,
+                        child: CachedNetworkImage(
+                          imageUrl: e,
+                          placeholder: (context, e) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, e, error) =>
+                              const Icon(Icons.error),
+                        )),
                   );
                 }).toList()
               ],
